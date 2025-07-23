@@ -2,9 +2,9 @@ package com.s21.devops.sample.sessionservice.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Id;
+import jakarta.persistence.Id;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.UUID;
 
 @Entity

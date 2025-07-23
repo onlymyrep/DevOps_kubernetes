@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.Base64;
 import java.util.UUID;
 

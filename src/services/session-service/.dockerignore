@@ -1,0 +1,40 @@
+# Игнорируем системные файлы
+**/.DS_Store
+**/.idea
+**/.vscode
+**/*.iml
+**/Thumbs.db
+
+# Игнорируем Git
+**/.git
+**/.gitignore
+
+# Игнорируем Maven
+**/target/
+**/pom.xml.tag
+**/pom.xml.releaseBackup
+**/pom.xml.versionsBackup
+**/pom.xml.next
+**/release.properties
+**/dependency-reduced-pom.xml
+**/buildNumber.properties
+**/.mvn/wrapper/maven-wrapper.jar
+
+# Игнорируем логи и временные файлы
+**/*.log
+**/*.tmp
+**/*.bak
+
+# Игнорируем тестовые данные
+**/src/test/
+
+# Игнорируем документацию
+**/README.md
+**/CHANGELOG.md
+**/LICENSE
+
+# Исключения (обязательно включаем)
+!**/src/main/
+!**/pom.xml
+!**/mvnw*
+!**/.mvn/wrapper/maven-wrapper.properties

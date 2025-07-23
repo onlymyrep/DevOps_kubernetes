@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  # RabbitMQ
+  RABBITMQ_HOST: rabbitmq-service
+  RABBITMQ_PORT: "5672"
+  RABBITMQ_QUEUE_NAME: booking_queue
+  RABBITMQ_EXCHANGE: booking_exchange
+  
+  # Service Discovery
+  SESSION_SERVICE_HOST: session-service
+  HOTEL_SERVICE_HOST: hotel-service
+  BOOKING_SERVICE_HOST: booking-service
+  LOYALTY_SERVICE_HOST: loyalty-service
+  REPORT_SERVICE_HOST: report-service
+  PAYMENT_SERVICE_HOST: payment-service
+  
+  # Common Spring Settings
+  SPRING_JPA_HIBERNATE_DDL_AUTO: update

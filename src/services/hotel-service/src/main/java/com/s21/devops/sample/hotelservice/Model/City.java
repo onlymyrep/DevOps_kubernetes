@@ -2,7 +2,7 @@ package com.s21.devops.sample.hotelservice.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "cities", schema = "public")

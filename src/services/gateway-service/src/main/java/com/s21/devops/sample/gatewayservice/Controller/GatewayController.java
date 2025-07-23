@@ -1,7 +1,6 @@
 package com.s21.devops.sample.gatewayservice.Controller;
 
 import com.s21.devops.sample.gatewayservice.Communication.*;
-import com.s21.devops.sample.gatewayservice.Communication.BookingInfo;
 import com.s21.devops.sample.gatewayservice.Exception.*;
 import com.s21.devops.sample.gatewayservice.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +11,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.util.UUID;
-
-import static org.springframework.util.StringUtils.hasText;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -34,80 +31,67 @@ public class GatewayController {
     @Autowired
     private ReportService reportService;
 
-    /*
-    @GetMapping("/users")
-    public Iterable<UserInfoRes> getUsers() {
-        Iterable<UserInfoRes> users = new ArrayList<>();
-        return users;
-    }*/
-
     @PostMapping("/users")
-    public void createUser(@Valid @RequestBody CreateUserReq createUserReq, @RequestHeader("Authorization") String authorization)
-            throws UserAlreadyExistsException {
-        sessionService.createUser(createUserReq, authorization);
+    public void createUser(@Valid @RequestBody CreateUserReq createUserReq) {
+        sessionService.createUser(createUserReq);
     }
 
     @GetMapping("/hotels")
-    public HotelInfoRes[] getHotels()
-            throws CustomJwtException, CustomRuntimeException {
+    public HotelInfoRes[] getHotels() {
         return hotelsService.getAllHotels();
     }
 
     @GetMapping("/hotels/{hotelUid}")
-    public HotelInfoRes getHotelInfo(@PathVariable UUID hotelUid)
-            throws CustomJwtException, HotelNotFoundException, CustomRuntimeException {
+    public HotelInfoRes getHotelInfo(@PathVariable UUID hotelUid) 
+            throws HotelNotFoundException {
         return hotelsService.getHotel(hotelUid);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/booking")
-    public void bookHotel(@Valid @RequestBody BookHotelReq bookHotelReq, @RequestHeader("Authorization") String authorization)
-            throws CustomJwtException, ReservationAlreadyExistsException, CustomRuntimeException, HotelAlreadyExistsException {
-        System.out.println("hotel was booked");
-        bookHotelReq.setUserUid(getUserUid(authorization));
+    public void bookHotel(@Valid @RequestBody BookHotelReq bookHotelReq) {
         bookingService.bookHotel(bookHotelReq);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/booking/{hotelUid}")
-    public void removeBooking(@PathVariable UUID hotelUid, @RequestHeader("Authorization") String authorization)
-            throws CustomJwtException, CustomRuntimeException, ReservationNotFoundException {
-        System.out.println("booking for " + hotelUid.toString() + " was removed");
-        bookingService.removeBooking(hotelUid, getUserUid(authorization));
+    public void removeBooking(@PathVariable UUID hotelUid) 
+            throws ReservationNotFoundException {
+        bookingService.removeBooking(hotelUid);
     }
 
     @GetMapping("/booking/{hotelUid}")
-    public BookingInfo getBookingInfo(@PathVariable UUID hotelUid, @RequestHeader("Authorization") String authorization)
-            throws CustomJwtException, CustomRuntimeException, ReservationNotFoundException {
-        return bookingService.getBookingInfo(hotelUid, getUserUid(authorization));
+    public BookingInfo getBookingInfo(@PathVariable UUID hotelUid) 
+            throws ReservationNotFoundException {
+        return bookingService.getBookingInfo(hotelUid);
     }
 
     @GetMapping("/booking")
-    public BookingInfo[] getAllBookingInfo(@RequestHeader("Authorization") String authorization)
-            throws CustomJwtException, CustomRuntimeException, ReservationNotFoundException {
-        return bookingService.getAllBookingInfo(getUserUid(authorization));
+    public BookingInfo[] getAllBookingInfo() {
+        return bookingService.getAllBookingInfo();
     }
 
     @GetMapping("/booking/{hotelUid}/rooms")
-    public HotelsAavailabilityRes getBookingAvailability(@PathVariable UUID hotelUid, @RequestParam String from, @RequestParam String to)
-            throws CustomJwtException, CustomRuntimeException, HotelNotFoundException {
-        return bookingService.getHotelsAvailaibility(hotelUid, from, to);
+    public HotelsAvailabilityRes getBookingAvailability(
+            @PathVariable UUID hotelUid, 
+            @RequestParam String from, 
+            @RequestParam String to) 
+            throws HotelNotFoundException {
+        return bookingService.getHotelsAvailability(hotelUid, from, to);
     }
 
     @GetMapping("/loyalty")
-    public LoyaltyBalanceRes getLoyaltyBalance(@RequestHeader("Authorization") String authorization)
-            throws CustomJwtException, CustomRuntimeException {
+    public LoyaltyBalanceRes getLoyaltyBalance() {
         try {
-            return loyaltyService.getLoyaltyBalance(getUserUid(authorization));
-        } catch (LoyaltyNotFoundException ex){
+            return loyaltyService.getLoyaltyBalance();
+        } catch (LoyaltyNotFoundException ex) {
             return LoyaltyBalanceRes.loyaltyBalanceResFromParams("NO", 0.0);
         }
     }
 
     @PostMapping("/hotels")
-    public ResponseEntity<Void> addHotel(@Valid @RequestBody CreateHotelReq createHotelReq)
-            throws CustomRuntimeException, CustomJwtException, HotelAlreadyExistsException {
-        System.out.println("hotel was created");
+    public ResponseEntity<Void> addHotel(@Valid @RequestBody CreateHotelReq createHotelReq) 
+            throws HotelAlreadyExistsException {
         UUID hotelUid = hotelsService.createHotel(createHotelReq);
         return ResponseEntity.created(ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -118,31 +102,23 @@ public class GatewayController {
     }
 
     @PatchMapping("/hotels/{hotelUid}/rooms")
-    public void patchRoomsInfo(@PathVariable UUID hotelUid, @Valid @RequestBody PatchRoomsInfoReq patchRoomsInfoReq)
-            throws CustomJwtException, CustomRuntimeException {
-        System.out.println("rooms info for hotel " + hotelUid.toString() + "was changed");
+    public void patchRoomsInfo(
+            @PathVariable UUID hotelUid, 
+            @Valid @RequestBody PatchRoomsInfoReq patchRoomsInfoReq) {
         bookingService.patchRoomInfo(hotelUid, patchRoomsInfoReq);
     }
 
     @GetMapping("/reports/booking")
-    public BookingStatisticsMessage[] getBookingStats(@RequestParam("from") String from, @RequestParam("to") String to)
-            throws CustomJwtException, CustomRuntimeException {
-        System.out.println("get booking statistics was called");
+    public BookingStatisticsMessage[] getBookingStats(
+            @RequestParam("from") String from, 
+            @RequestParam("to") String to) {
         return reportService.getUserStatistics(from, to);
     }
 
     @GetMapping("/reports/hotels-filling")
-    public HotelFillingStatistics[] getFillingStats(@RequestParam("from") String from, @RequestParam("to") String to)
-            throws CustomJwtException, CustomRuntimeException {
-        System.out.println("get hotels filling statistics was called");
+    public HotelFillingStatistics[] getFillingStats(
+            @RequestParam("from") String from, 
+            @RequestParam("to") String to) {
         return reportService.getHotelStatistics(from, to);
-    }
-
-    private UUID getUserUid(String authorization) throws CustomJwtException, CustomRuntimeException {
-        if (hasText(authorization) && authorization.startsWith("Bearer ")) {
-            authorization = authorization.substring(7);
-        }
-        UserUidRes userUidRes = sessionService.validateToken(authorization);
-        return userUidRes.getUserUid();
     }
 }

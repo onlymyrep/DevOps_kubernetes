@@ -1,41 +1,17 @@
-package com.s21.devops.sample.reportservice.Controller;
+package com.s21.devops.sample.reportservice;
 
-import com.s21.devops.sample.reportservice.Communication.BookingStatisticsMessage;
-import com.s21.devops.sample.reportservice.Communication.HotelFillingStatistics;
-import com.s21.devops.sample.reportservice.Service.BookingStatsService;
-import com.s21.devops.sample.reportservice.Service.SecurityService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.persistence.EntityNotFoundException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
+import org.springframework.format.annotation.DateTimeFormat;
+import java.time.LocalDate;
 
 @RestController
-@RequestMapping("/api/v1/report")
+@RequestMapping("/api/v1/reports")
 public class ReportController {
-    @Autowired
-    private BookingStatsService bookingStatsService;
-
-    @Autowired
-    private SecurityService securityService;
-
-    @GetMapping("/users")
-    public Iterable<BookingStatisticsMessage> getBookingStats(@RequestParam("from") String from, @RequestParam("to") String to) {
-        return bookingStatsService.getUserStatistics(from, to);
+    
+    @GetMapping("/booking-stats")
+    public BookingStatsRes getStats(
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
+        return reportService.getStats(from, to);
     }
-
-    @GetMapping("/hotels")
-    public Iterable<HotelFillingStatistics> getHotelFillingStats(@RequestParam("from") String from, @RequestParam("to") String to) {
-        return bookingStatsService.getHotelStatistics(from, to);
-    }
-
-    @GetMapping("/authorize")
-    public ResponseEntity<Void> authorize(@RequestHeader("authorization") String authorization)
-            throws InvalidKeySpecException, NoSuchAlgorithmException, EntityNotFoundException {
-        String jwtToken = securityService.authorize(authorization);
-        return ResponseEntity.ok().header("Authorization", "Bearer " + jwtToken).build();
-    }
-
 }

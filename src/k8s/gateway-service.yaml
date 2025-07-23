@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway-service
+  template:
+    metadata:
+      labels:
+        app: gateway-service
+    spec:
+      containers:
+      - name: gateway-service
+        image: gateway-service:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SPRING_SECURITY_USER_NAME
+          valueFrom:
+            secretKeyRef:
+              name: basic-auth-secrets
+              key: admin-username
+        - name: SPRING_SECURITY_USER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: basic-auth-secrets
+              key: admin-password
+        - name: SERVICES_AUTH_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: basic-auth-secrets
+              key: service-username
+        - name: SERVICES_AUTH_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: basic-auth-secrets
+              key: service-password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-service
+spec:
+  selector:
+    app: gateway-service
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

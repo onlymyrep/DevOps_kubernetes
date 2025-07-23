@@ -1,0 +1,26 @@
+server:
+  port: 8080
+
+spring:
+  security:
+    user:
+      name: service_user
+      password: service_password
+      roles: SERVICE
+  
+  datasource:
+    url: jdbc:postgresql://postgres:5432/booking_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true

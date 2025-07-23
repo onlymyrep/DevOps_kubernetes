@@ -1,77 +1,39 @@
-package com.s21.devops.sample.bookingservice.Communication;
-
-import com.s21.devops.sample.bookingservice.Communication.Aux.DateInterval;
-import com.s21.devops.sample.bookingservice.Model.Reservation;
+package com.s21.devops.sample.bookingservice.model;
 
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDate;
-import java.util.UUID;
 
 public class BookHotelReq {
     @NotBlank
-    private UUID hotelUid;
+    private String hotelUid;
+    
     @NotBlank
-    private Integer room;
-    private String paymentInfo;
-    private UUID userUid;
-    private DateInterval dateInterval;
-    private Float roomCost;
+    private String dateFrom;
+    
+    @NotBlank
+    private String dateTo;
 
-    public static Reservation reservationFromBookHotelReq(BookHotelReq bookHotelReq, LocalDate date){
-        Reservation reservation = new Reservation();
-        reservation.setDate(date);
-        reservation.setHotelUid(bookHotelReq.getHotelUid());
-        reservation.setUserUid(bookHotelReq.getUserUid());
-        reservation.setReservationUid(UUID.randomUUID());
-        return reservation;
-    }
-
-
-    public UUID getHotelUid() {
+    // Геттеры и сеттеры
+    public String getHotelUid() {
         return hotelUid;
     }
 
-    public void setHotelUid(UUID hotelUid) {
+    public void setHotelUid(String hotelUid) {
         this.hotelUid = hotelUid;
     }
 
-    public Integer getRoom() {
-        return room;
+    public String getDateFrom() {
+        return dateFrom;
     }
 
-    public void setRoom(Integer room) {
-        this.room = room;
+    public void setDateFrom(String dateFrom) {
+        this.dateFrom = dateFrom;
     }
 
-    public String getPaymentInfo() {
-        return paymentInfo;
+    public String getDateTo() {
+        return dateTo;
     }
 
-    public void setPaymentInfo(String paymentInfo) {
-        this.paymentInfo = paymentInfo;
-    }
-
-    public UUID getUserUid() {
-        return userUid;
-    }
-
-    public void setUserUid(UUID userUid) {
-        this.userUid = userUid;
-    }
-
-    public DateInterval getDateInterval() {
-        return dateInterval;
-    }
-
-    public void setDateInterval(DateInterval dateInterval) {
-        this.dateInterval = dateInterval;
-    }
-
-    public Float getRoomCost() {
-        return roomCost;
-    }
-
-    public void setRoomCost(Float roomCost) {
-        this.roomCost = roomCost;
+    public void setDateTo(String dateTo) {
+        this.dateTo = dateTo;
     }
 }

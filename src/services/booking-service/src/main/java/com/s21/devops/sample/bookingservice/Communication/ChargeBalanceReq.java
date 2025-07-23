@@ -1,19 +1,14 @@
 package com.s21.devops.sample.bookingservice.Communication;
 
 public class ChargeBalanceReq {
-    private Float charge;
+    private Integer amount;
 
-    public static ChargeBalanceReq chargeBalanceReqFromCharge(Float cost) {
-        ChargeBalanceReq chargeBalanceReq = new ChargeBalanceReq();
-        chargeBalanceReq.setCharge(cost);
-        return chargeBalanceReq;
+    // Геттеры и сеттеры
+    public Integer getAmount() {
+        return amount;
     }
 
-    public Float getCharge() {
-        return charge;
-    }
-
-    public void setCharge(Float charge) {
-        this.charge = charge;
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 }

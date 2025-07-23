@@ -2,7 +2,7 @@ package com.s21.devops.sample.gatewayservice.Communication;
 
 import com.s21.devops.sample.gatewayservice.Communication.Aux.DateInterval;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 import java.util.UUID;
 
 public class BookHotelReq {

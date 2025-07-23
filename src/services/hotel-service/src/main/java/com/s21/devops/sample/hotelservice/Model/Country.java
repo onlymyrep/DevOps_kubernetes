@@ -1,6 +1,6 @@
 package com.s21.devops.sample.hotelservice.Model;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "countries", schema = "public")

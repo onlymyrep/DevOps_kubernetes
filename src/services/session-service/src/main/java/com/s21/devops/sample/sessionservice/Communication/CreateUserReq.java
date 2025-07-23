@@ -1,6 +1,6 @@
 package com.s21.devops.sample.sessionservice.Communication;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 public class CreateUserReq {
     @NotBlank

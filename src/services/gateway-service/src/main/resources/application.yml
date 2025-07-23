@@ -1,0 +1,21 @@
+server:
+  port: 8080
+
+spring:
+  security:
+    user:
+      name: admin
+      password: password
+      roles: ADMIN
+  application:
+    name: gateway-service
+
+services:
+  session:
+    url: http://session-service:8080
+    username: service_user
+    password: service_password
+  hotel:
+    url: http://hotel-service:8080
+    username: service_user
+    password: service_password

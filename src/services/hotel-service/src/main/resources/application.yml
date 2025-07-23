@@ -1,0 +1,15 @@
+server:
+  port: 8080
+
+spring:
+  security:
+    user:
+      name: service_user
+      password: service_password
+      roles: SERVICE
+  application:
+    name: hotel-service
+  datasource:
+    url: jdbc:postgresql://postgres:5432/hotel_db
+    username: postgres
+    password: postgres
