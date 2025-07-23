@@ -141,7 +141,7 @@ kubectl apply -f src/k8s/
 
 - Создал туннели к сервисам: `minikube service gateway-service --url` и `minikube service session-service --url`
 
-![проброс_туннелей](../misc/images/проброс_туннелей.png)
+![tunnel](../misc/images/tunnel.png)
 
 - Особенности сервисов:
   - Все сервисы используют порт 8080, кроме специально указанных (session-service и gateway-service используют NodePort 30001 и 30000 соответственно)
